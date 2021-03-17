@@ -1,0 +1,103 @@
+﻿@page "/blog/{slug}"
+
+@using GraphQL
+@using GraphQL.Client.Http
+@using Models
+@using Newtonsoft.Json
+
+@inject GraphQLHttpClient graphQlClient
+@inject NavigationManager navigation
+<!-- component -->
+
+@if (item == null)
+{
+	<p>Loading...</p>
+}
+else
+{
+	<main class="mt-10">
+
+		<div class="mb-4 md:mb-0 w-full max-w-screen-md mx-auto relative" style="height: 24em;">
+			<div class="absolute left-0 bottom-0 w-full h-full z-10"
+				 style="background-image: linear-gradient(180deg,transparent,rgba(0,0,0,.7));"></div>
+			<img src="@item.heroImage.url" class="absolute left-0 top-0 w-full h-full z-0 object-cover" alt="@item.heroImage.description"/>
+			<div class="p-4 absolute bottom-0 left-0 z-20">
+				<a href="#"
+				   class="px-4 py-1 bg-black text-gray-200 inline-flex items-center justify-center mb-2">@item.tag</a>
+				<h2 class="text-4xl font-semibold text-gray-100 leading-tight">
+					@item.title
+				</h2>
+				<div class="flex mt-3">
+					<img src="https://randomuser.me/api/portraits/men/97.jpg"
+						 class="h-10 w-10 rounded-full mr-2 object-cover" />
+					<div>
+						<p class="font-semibold text-gray-200 text-sm">  </p>
+						<p class="font-semibold text-gray-400 text-xs">  </p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="px-4 lg:px-0 mt-12 text-gray-700 max-w-screen-md mx-auto text-lg leading-relaxed">
+			<p>@item.postDate.Date</p>
+			<p class="pb-6">
+				@item.body
+			</p>
+
+		</div>
+	</main>
+}
+
+@code {
+
+	[Parameter]
+	public string Slug { get; set; }
+
+	private Item item = null;
+
+	protected async override Task OnInitializedAsync()
+	{
+		if (string.IsNullOrEmpty(Slug))
+		{
+			navigation.NavigateTo($"/blog");
+		}
+		else
+		{
+			var res = await GetResponse();
+
+			Console.WriteLine(JsonConvert.SerializeObject(res));
+
+			item = res.Data.articleCollection.items.FirstOrDefault();
+		}
+
+	}
+
+	private async Task<GraphQLResponse<data>> GetResponse()
+	{
+
+		var articleRequest = new GraphQLRequest
+		{
+			Query = $@"{{
+
+	  articleCollection: articleCollection(where:
+		{{slug: ""{Slug}""}}) {{
+		items {{
+		  title
+		  tag
+		  postDate
+		  body		 
+		  shortDescription
+		  heroImage{{
+			url
+			description
+		  }}
+		}}
+	  }}
+	}}",
+			OperationName = null
+		};
+
+
+		return await graphQlClient.SendQueryAsync<data>(articleRequest);
+	}
+}

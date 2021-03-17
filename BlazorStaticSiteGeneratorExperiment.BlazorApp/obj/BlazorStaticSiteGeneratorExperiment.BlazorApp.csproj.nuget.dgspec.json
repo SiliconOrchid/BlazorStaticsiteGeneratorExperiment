@@ -40,6 +40,30 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "GraphQL": {
+              "target": "Package",
+              "version": "[3.1.5, )"
+            },
+            "GraphQL.Client": {
+              "target": "Package",
+              "version": "[3.2.0, )"
+            },
+            "GraphQL.Client.Abstractions": {
+              "target": "Package",
+              "version": "[3.2.0, )"
+            },
+            "GraphQL.Client.Abstractions.Websocket": {
+              "target": "Package",
+              "version": "[3.2.0, )"
+            },
+            "GraphQL.Client.Serializer.Newtonsoft": {
+              "target": "Package",
+              "version": "[3.2.0, )"
+            },
+            "GraphQL.Client.Serializer.SystemTextJson": {
+              "target": "Package",
+              "version": "[3.2.0, )"
+            },
             "Microsoft.AspNetCore.Components.WebAssembly": {
               "target": "Package",
               "version": "[5.0.3, )"
