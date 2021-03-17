@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-using BlazorStaticSiteGeneratorExperiment.BlazorApp.Extensions;
+//using BlazorStaticSiteGeneratorExperiment.BlazorApp.Extensions;
 
 namespace BlazorStaticSiteGeneratorExperiment.BlazorApp
 {
@@ -22,7 +22,7 @@ namespace BlazorStaticSiteGeneratorExperiment.BlazorApp
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-            builder.AddContentfulGraphQLClient();
+            //builder.AddContentfulGraphQLClient();
 
 
             await builder.Build().RunAsync();
